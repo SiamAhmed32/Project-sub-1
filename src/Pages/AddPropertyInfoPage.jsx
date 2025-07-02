@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { useFormContext } from "../context/FormContext.jsx";
 import { toast } from "react-toastify";
-
 import Header from "../components/Header.jsx";
 import SectionRow from "../components/SectionRow.jsx";
 import ModalManager from "../components/ModalManager.jsx";
@@ -104,9 +103,9 @@ const DataRenderer = ({ sectionId, data }) => {
       );
   }
 };
+
 const Section = ({ section, data, onOpenModal, onDeleteData }) => (
   <div className="py-4 border-b border-gray-200 last:border-b-0">
-    {" "}
     <SectionRow
       title={section.title}
       isRequired={section.isRequired}
@@ -115,7 +114,7 @@ const Section = ({ section, data, onOpenModal, onDeleteData }) => (
       onAdd={() => onOpenModal(section.id)}
       onEdit={() => onOpenModal(section.id)}
       onDelete={() => onDeleteData(section.id)}
-    />{" "}
+    />
     {data && (
       <InfoDisplayBox
         onEdit={() => onOpenModal(section.id)}
@@ -123,7 +122,7 @@ const Section = ({ section, data, onOpenModal, onDeleteData }) => (
       >
         <DataRenderer sectionId={section.id} data={data} />
       </InfoDisplayBox>
-    )}{" "}
+    )}
   </div>
 );
 
@@ -204,7 +203,6 @@ const AddPropertyInfoPage = () => {
   const handleNextStep = () => {
     const requiredSections = allSections.filter((s) => s.isRequired);
     const missingSections = requiredSections.filter((s) => !propertyData[s.id]);
-
     if (missingSections.length > 0) {
       toast.warn(
         `Please complete the following required sections: ${missingSections
@@ -215,7 +213,6 @@ const AddPropertyInfoPage = () => {
     }
     setStep(3);
   };
-  //
 
   const handleDeleteData = (sectionId) => {
     if (window.confirm("Are you sure?")) {
@@ -226,6 +223,7 @@ const AddPropertyInfoPage = () => {
       });
     }
   };
+
   const handleFileSelect = (section, file, index = -1) => {
     setPropertyData((prev) => {
       const d = { ...prev };
@@ -243,6 +241,7 @@ const AddPropertyInfoPage = () => {
       return d;
     });
   };
+
   const handleFileRemove = (section, index = -1) => {
     setPropertyData((prev) => {
       const d = { ...prev };
@@ -266,7 +265,10 @@ const AddPropertyInfoPage = () => {
       <Header showExit={false} />
       <div className="bg-gray-50 border-b">
         <div className="container mx-auto px-4 py-3 flex justify-end">
-          <button className="text-gray-600 font-medium hover:text-gray-900 border border-gray-300 px-4 py-1.5 rounded-lg text-sm bg-white">
+          <button
+            onClick={() => setStep(1)}
+            className="text-gray-600 font-medium hover:text-gray-900 border border-gray-300 px-4 py-1.5 rounded-lg text-sm bg-white"
+          >
             Save & Exit
           </button>
         </div>
@@ -366,7 +368,6 @@ const AddPropertyInfoPage = () => {
           >
             Back
           </button>
-
           <button
             onClick={handleNextStep}
             className="bg-blue-600 text-white font-semibold px-6 py-2.5 rounded-lg hover:bg-blue-700 text-sm"

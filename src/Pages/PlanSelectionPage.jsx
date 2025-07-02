@@ -1,4 +1,3 @@
-// src/Pages/PlanSelectionPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useFormContext } from '../context/FormContext.jsx';
 import Header from '../components/Header.jsx';
@@ -20,10 +19,7 @@ const savedCards = [
 ];
 
 const PlanSelectionPage = () => {
-  // --- মূল সমাধানটি এখানে ---
-  // Context থেকে এখন সরাসরি ডেটা এবং ফাংশন নেওয়া হচ্ছে
-  const { propertyData, selectionData, setStep } = useFormContext();
-  // --- সমাধান শেষ ---
+  const { propertyData, selectionData, setStep, resetForm } = useFormContext();
   
   const totalUnit = parseInt(propertyData?.propertyAddress?.totalUnit, 10) || 0;
 
@@ -71,7 +67,7 @@ const PlanSelectionPage = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      <Header />
+      <Header onExit={resetForm} />
       <main className="flex-grow container mx-auto px-4 py-8 max-w-4xl">
         <h2 className="text-2xl font-bold text-gray-800 mb-2">Choose a plan for after 30-days free trial</h2>
         
@@ -86,7 +82,7 @@ const PlanSelectionPage = () => {
 
         <div className="grid md:grid-cols-3 gap-6">
           {plans.map(plan => (
-            <PlanCard key={plan.id} plan={{...plan, isAnnual}} isSelected={selectedPlanId === selectedPlanId} onSelect={setSelectedPlanId} />
+            <PlanCard key={plan.id} plan={{...plan, isAnnual}} isSelected={selectedPlanId === plan.id} onSelect={setSelectedPlanId} />
           ))}
         </div>
 
@@ -102,11 +98,10 @@ const PlanSelectionPage = () => {
           </div>
         </div>
       </main>
-
       <footer className="bg-white border-t sticky bottom-0">
         <div className="w-full h-1 bg-gray-200"><div className="w-full h-full bg-blue-600"></div></div>
         <div className="container mx-auto px-4 py-4 flex justify-between items-center max-w-4xl">
-          <button onClick={() => setStep(2)} className="text-gray-600 font-medium hover:text-gray-900 text-sm">Exit</button>
+          <button onClick={() => setStep(2)} className="text-gray-600 font-medium hover:text-gray-900 text-sm">Back</button>
           <div className="flex items-center gap-4">
             <p className="text-gray-700">Total with card charge: <span className="font-bold text-lg">${totalCharge}</span></p>
             <button onClick={handleFinalSubmit} className="bg-blue-600 text-white font-semibold px-6 py-2.5 rounded-lg hover:bg-blue-700 text-sm">
@@ -115,10 +110,7 @@ const PlanSelectionPage = () => {
           </div>
         </div>
       </footer>
-      
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Add new card">
-        <AddCardModal onClose={() => setIsModalOpen(false)} onSave={handleAddNewCard} />
-      </Modal>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Add new card"><AddCardModal onClose={() => setIsModalOpen(false)} onSave={handleAddNewCard} /></Modal>
     </div>
   );
 };
